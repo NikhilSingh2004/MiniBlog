@@ -1,5 +1,5 @@
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,6 +12,8 @@ SECRET_KEY = 'django-insecure-30dm!s-rei_e639$xv66o@)&ckpr_%#4=i6600n%oxpv2-npe4
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+TEMPLATES_DIRS = os.path.join(BASE_DIR, "templates")
 
 ALLOWED_HOSTS = []
 
@@ -47,7 +49,7 @@ ROOT_URLCONF = 'miniblog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIRS],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

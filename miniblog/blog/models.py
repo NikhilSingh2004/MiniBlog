@@ -11,13 +11,6 @@ from datetime import datetime
     Can Add more content if needed!.
 '''
 
-'''
-
-class Blog(models.Model):
-    pass
-    
-'''
-
 class Blog(models.Model):
     user = models.OneToOneField('user.M_User', on_delete=models.CASCADE)
 

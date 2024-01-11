@@ -17,4 +17,8 @@ def EditUser(request : HttpRequest) -> HttpResponse:
     return HttpResponse("This is the Edit Page of the user with the Object being initialized!")
 
 def DeleteUser(request :  HttpRequest) -> HttpResponse:
+    '''
+        Function to delete the user. First Make sure the user is authenticated 
+        Do not do hard delete! Make a soft delete
+    '''
     return HttpResponse("This is the Delete User Function")
