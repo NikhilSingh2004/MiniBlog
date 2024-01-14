@@ -1,25 +1,16 @@
-from pathlib import Path
 import os
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from pathlib import Path
+from django.contrib import messages
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-30dm!s-rei_e639$xv66o@)&ckpr_%#4=i6600n%oxpv2-npe4'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 TEMPLATES_DIRS = os.path.join(BASE_DIR, "templates")
 
 ALLOWED_HOSTS = []
-
-# AUTH_USER_MODEL = 'user.M_User'
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -87,10 +78,6 @@ DATABASES = {
 	}
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -106,6 +93,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

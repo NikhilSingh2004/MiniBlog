@@ -7,15 +7,17 @@ from datetime import datetime
         User (Foreign) - User Model Field
         Title - Title Char Field
         Content - TextArea Field
-    
+        Slug - Slug for the URL
     Can Add more content if needed!.
 '''
 
 class Blog(models.Model):
-    user = models.OneToOneField('user.M_User', on_delete=models.CASCADE)
+    author = models.OneToOneField('user.M_User', on_delete=models.CASCADE)
 
     date = models.DateTimeField(default=datetime.now())
 
     title = models.CharField(max_length=1024, null=True)
 
-    Content = models.TextField(null=True)
+    content = models.TextField(null=True)
+
+    slug = models.CharField(max_length=256)

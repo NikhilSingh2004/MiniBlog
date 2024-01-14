@@ -1,6 +1,9 @@
+from user.models import M_User
 from django.shortcuts import render
-from django.contrib.auth import login, logout
+from django.contrib import messages
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from .forms import SignUpForm, AuthenticateM_UserForm, CustomPasswordChangeForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
 # Function to Display the Home Page of the WebSite
 def Home(request : HttpRequest) -> HttpResponse:
@@ -8,7 +11,9 @@ def Home(request : HttpRequest) -> HttpResponse:
         Function to display the Home Page of the Project
         Note: Do not make any changes let the page be GET, as the initial request is always GET. Let it be static
     '''
-    return render(request, 'core/home.html')
+    if request.user.is_authenticated:
+        return render(request, 'core/home.html', {'loged_in' : True})
+    return render(request, 'core/home.html', {'sign_log' : True})
 
 # Function to Display the About Page of the WebSite 
 def About(request : HttpRequest) -> HttpResponse:
@@ -16,7 +21,9 @@ def About(request : HttpRequest) -> HttpResponse:
         About Page!
         Mostly Static
     '''
-    return render(request, 'core/about.html')
+    if request.user.is_authenticated:
+        return render(request, 'core/about.html', {'loged_in' : True})
+    return render(request, 'core/about.html', {'sign_log' : True})
 
 # Function to Display the Contact Page of the WebSite 
 def Contact(request : HttpRequest) -> HttpResponse:
@@ -25,7 +32,9 @@ def Contact(request : HttpRequest) -> HttpResponse:
         Request == POST -> Validate the Contact Form and send the Mail
         Request == GET -> Render the Form Fields to the user!
     '''
-    return render(request, 'core/contact.html')
+    if request.user.is_authenticated:
+        return render(request, 'core/contact.html', {'loged_in' : True})
+    return render(request, 'core/contact.html', {'sign_log' : True})
 
 # Function for Sign Up 
 def SignUP(request : HttpRequest) -> HttpResponse:
@@ -33,10 +42,25 @@ def SignUP(request : HttpRequest) -> HttpResponse:
         Using Django's Authentication System!
         Model Made out of Abstract User so is needed more fields? Then add in the user application's models.py file it!
     '''
-    return render(request, 'core/signup.html')
+    if not request.user.is_authenticated:
+        form = SignUpForm()
+        if request.method == "POST":
+            try:
+                form = SignUpForm(data=request.POST)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, "Sign Up Successful!")
+                    return HttpResponseRedirect('/')
+                form = SignUpForm()
+                return render(request, 'core/signup.html', {'form' : form, 'sign_log' : False})
+            except Exception as e:
+                print(e.__str__())
+                return render(request, 'core/signup.html', {'form' : form, 'sign_log' : False})
+        else:
+            return render(request, 'core/signup.html', {'form' : form, 'sign_log' : False})
 
 # Function for Log In
-def LogIn(request : HttpRequest) -> HttpResponse:
+def LogIn(request: HttpRequest) -> HttpResponse:
     '''
         Also using Django's Authentication System!
         Request == POST -> Validate the fields and is correct then login & redirect to User Home Page!
@@ -44,13 +68,69 @@ def LogIn(request : HttpRequest) -> HttpResponse:
 
         If any mistake in error or Form not validated then render the Same Page!
     '''
-    return render(request, 'core/login.html')
+    form = AuthenticateM_UserForm()
 
-def LogOut(request : HttpRequest) -> HttpResponse:
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            try:
+                fm = AuthenticateM_UserForm(data=request.POST)
+                if fm.is_valid():
+                    username = fm.cleaned_data['username']
+                    password = fm.cleaned_data['password']
+                    user = authenticate(username=username, password=password)
+                    
+                    if user:
+                        login(request=request, user=user)
+                        messages.success(request, "Log In Successful")
+                        return HttpResponseRedirect('/')
+                    else:
+                        form.add_error(None, 'Invalid username or password')
+                return render(request, 'core/login.html', {'form': form, 'sign_log' : False})
+            except Exception as e:
+                print(e.__str__())
+                return render(request, 'core/login.html', {'form': form, 'sign_log' : False})
+        else:
+            return render(request, 'core/login.html', {'form': form, 'sign_log' : False})
+    else:
+        return HttpResponseRedirect('/')
+
+# Function to Log Out the User
+def LogOut(request: HttpRequest) -> HttpResponse:
     '''
         Using Django's Authentication System!
         Clearing the Session!
     '''
     if request.user.is_authenticated:
-        logout(request.user)
+        try:
+            logout(request)
+            messages.success(request, "Log Out Successful")
+        except Exception as e:
+            print(e.__str__())
     return HttpResponseRedirect('/')
+
+# Function to Change User Password
+def ChangePassword(request: HttpRequest) -> HttpResponse:
+    '''
+        Function to Let Users Change Their password
+
+        Request == POST -> Validate The Change Password Form
+        Request == GET -> Render the Change Password Form (But only if the user is authenticated!)
+    '''
+    if request.user.is_authenticated:
+        form = CustomPasswordChangeForm(user=request.user)
+        if request.method == "POST":
+            try:
+                form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+                if form.is_valid():
+                    form.save() 
+                    update_session_auth_hash(request, form.user)
+                    print('Password Changes Successfuly!')
+                    messages.success(request, "Password changed successfully")
+                    return HttpResponseRedirect('/')
+                else:
+                    messages.error(request, "Please Select an Strong Password")
+            except Exception as e:
+                print(e.__str__())
+        return render(request, 'core/passwordChange.html', {'form': form})
+    else:
+        return HttpResponseRedirect('/login/')

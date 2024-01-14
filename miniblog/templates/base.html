@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="{% static 'core/css/main.css' %}">
 
-    <title>Home | MiniBlog</title>
+    <title>{% block title %}{% endblock title %} | MiniBlog</title>
 
 </head>
 
@@ -22,61 +22,71 @@
 
     <nav id="myNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark text-white fw-bold mb">
         <div class="container-fluid">
-            <img class="d-block mx-2 my-1 rounded-circle" src="{% static '/core/images/LinkedIn.jpg' %}" alt=""
-                width="50" height="50">
-            <a class="navbar-brand" href="#"><h2>MiniBlog</h2></a>
+            <img class="d-block mx-2 my-1 rounded-circle"
+                src="{% static 'core/images/LinkedIn.jpg' %}" alt="" width="50" height="50">
+            <a class="navbar-brand" href="{% url 'Home' %}">MiniBlog</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse justify-content-center" id="navbarScroll">
+            <div class="collapse navbar-collapse justify-content-center" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     <li class="nav-item">
-                        <a class="nav-link {% block homeActive %} {% endblock homeActive %}" href="{% url 'Home' %}">
-                            <h3>Home</h3>
-                        </a>
+                        <a class="nav-link {% block homeActive %} {% endblock homeActive %}" aria-current="page"
+                            href="{% url 'Home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% block blogActive %} {% endblock blogActive %}" href="{% url 'BlogHome' %}">
-                            <h3>Blog</h3>
-                        </a>
+                        <a class="nav-link {% block blogActive %} {% endblock blogActive %}"
+                            href="{% url 'BlogHome' %}">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% block aboutActive %} {% endblock aboutActive %}" href="{% url 'About' %}">
-                            <h3>About</h3>
-                        </a>
+                        <a class="nav-link {% block aboutActive %} {% endblock aboutActive %}"
+                            href="{% url 'About' %}">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% block contactActive %} {% endblock contactActive %}" href="{% url 'Contact' %}">
-                            <h3>Contact</h3>
-                        </a>
+                        <a class="nav-link {% block conActive %} {% endblock conActive %}"
+                            href="{% url 'Contact' %}">Contact</a>
                     </li>
                 </ul>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                {% if sign_log %}
                     <ul class="navbar-nav ml-auto">
-                        {% block SignLog %}
                         <li class="nav-item">
-                            <form method='post'>
-                                {% csrf_token %}
-                                <a class="btn btn-outline-success mx-2" href="{% url 'SignUp' %}">SignUp</a>
-                            </form>
+                            <a class="btn btn-outline-success m-2" href="{% url 'SignUp' %}">Sign Up</a>
                         </li>
                         <li class="nav-item">
-                            <form method='post'>
-                                {% csrf_token %}
-                                <a class="btn btn-outline-success mx-2" href="{% url 'LogIn' %}">LogIn</a>
-                            </form>
+                            <a class="btn btn-success m-2" href="{% url 'LogIn' %}">Log In</a>
                         </li>
-                        {% endblock %}
+                    </ul>             
+                {% elif loged_in %}
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="btn btn-outline-warning m-2" href="{% url 'ChangePass' %}">Change Password</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-danger m-2" href="{% url 'LogOut' %}">Log Out</a>
+                        </li>
                     </ul>
-                </div>
+                {% elif save_blog %}
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="btn btn-success m-2" href="{% url 'SaveBlog' blog.slug %}">Save Blog</a>
+                        </li>
+                    </ul>
+                {% endif %}
             </div>
         </div>
     </nav>
-
+    
     <!--Social Navigation End-->
 
-    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <h3>{{ message }}</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %} 
 
     {% block content %} {% endblock content %}
 
