@@ -2,8 +2,8 @@ from user.models import M_User
 from django.shortcuts import render
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .forms import SignUpForm, AuthenticateM_UserForm, CustomPasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from .forms import SignUpForm, AuthenticateM_UserForm, CustomPasswordChangeForm, FormContactUs
 
 # Function to Display the Home Page of the WebSite
 def Home(request : HttpRequest) -> HttpResponse:
@@ -32,9 +32,24 @@ def Contact(request : HttpRequest) -> HttpResponse:
         Request == POST -> Validate the Contact Form and send the Mail
         Request == GET -> Render the Form Fields to the user!
     '''
+    form = FormContactUs()
     if request.user.is_authenticated:
-        return render(request, 'core/contact.html', {'loged_in' : True})
-    return render(request, 'core/contact.html', {'sign_log' : True})
+        if request.method == "POST":
+            try:
+                form = FormContactUs(data = request.POST)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, "Mail Sent Successfuly!")
+                    return HttpResponseRedirect('/')
+                messages.error(request, "Please Enter Correct Details!")
+                return render(request, 'core/contact.html', {'loged_in' : True, 'form' : form})
+            except Exception as e:
+                print(e.__str__())
+                messages.error(request, "Something Went Wrong!")
+                return HttpResponseRedirect('/')
+        return render(request, 'core/contact.html', {'loged_in' : True, 'form' : form})
+    messages.error(request, "Please LogIn!")
+    return render(request, 'core/contact.html', {'sign_log' : True, 'form' : form})
 
 # Function for Sign Up 
 def SignUP(request : HttpRequest) -> HttpResponse:

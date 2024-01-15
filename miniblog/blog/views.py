@@ -13,17 +13,16 @@ def BlogHome(request : HttpRequest) -> HttpResponse:
     Blog_list = Blog.objects.all().order_by('id') 
     paginator = Paginator(Blog_list, 5)
     page = request.GET.get('page', 1)
-    print('This is Ok')
     blogs = None
     try:
         blogs = paginator.page(page)
-        print('No Error in Blog')
     except PageNotAnInteger:
         blogs = paginator.page(1)
     except EmptyPage:
         blogs = paginator.page(paginator.num_pages)
-    print(Blog)
-    return render(request, 'blog/blogHome.html', {'blogs' : blogs})
+    if request.user.is_authenticated:
+        return render(request, 'blog/blogHome.html', {'blogs' : blogs, 'loged_in':True})
+    return render(request, 'blog/blogHome.html', {'blogs' : blogs, 'sign_log':True})
 
 # Function to Display One Specific Blog Selected To Read
 def OneBlog(request : HttpRequest, slug : str) -> HttpResponse:
@@ -44,14 +43,22 @@ def SaveBlog(request : HttpRequest, slug : str) -> HttpResponse:
         First Authenticate the User and is yes, then add the blog object of the saved_blogs field.
         And Redirect the User to the page where the user was!.
     '''
-    id = request.user.id
-    try:
-        user = M_User.objects.filter(id=id)
-        if user:
-            blog = Blog.objects.filter(slug=slug).first()
-            user.saved_blogs.append(blog)
-            return
-        return HttpResponseRedirect('/')
-    except Exception as e:
-        print(e.__str__())
-        return HttpResponseRedirect('/blog/')
+    if request.user.is_authenticated:
+        id = request.user.id
+        print(id)
+        try:
+            user = M_User.objects.filter(id=id).first()
+            if user:
+                print(user)
+                print(user.saved_blogs)
+                blog = Blog.objects.filter(slug=slug).first()
+                print(blog.title)
+                user.saved_blogs.add(blog)
+                print(user.saved_blogs)
+                return HttpResponseRedirect(f'/blog/{slug}')
+            return HttpResponseRedirect('/')
+        except Exception as e:
+            print(e.__str__())
+            return HttpResponseRedirect('/blog/')
+    else:
+        return HttpResponseRedirect('/login/')

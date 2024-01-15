@@ -14,8 +14,102 @@ active
 
 {% block content %} 
 
-<div class="container text-center alert alert-success">
-    <h1 class="display-5">This is the Contact Page!</h1>
+{% comment %}
+    Need To Make an Contact Us Model Form also ContactUs Model
+{% endcomment %}
+
+<div class="container px-4 my-5">
+    <h1 class="pb-3 border-bottom fw-bold">Contact us from Social Media</h1>
+</div>
+
+<div class="container px-4 text-center" style="background-color: rgb(217, 241, 255);">
+    <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5 pt-5 text-bg-light rounded-3">
+        <div class="d-flex flex-column align-items-start gap-2">
+            <h2 class="text-bg-light">There are the Basic and Profesional Social Media Handels/Contact No.</h2>
+            <p class="text-muted">If you want to contact us throught Mail, then below this page there is a way
+                out,
+                check it out.
+            </p>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 g-4">
+            <div class="d-flex flex-column gap-2">
+                <div
+                    class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-dark bg-gradient fs-4 rounded-3">
+                    <svg class="bi" width="1em" height="1em">
+                        <use xlink:href="#collection"></use>
+                    </svg>
+                </div>
+                <h4 class="fw-semibold mb-0">Phone No.</h4>
+                <p class="text-muted">+91 999999999</p>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <div
+                    class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-dark bg-gradient fs-4 rounded-3">
+                    <svg class="bi" width="1em" height="1em">
+                        <use xlink:href="#collection"></use>
+                    </svg>
+                </div>
+                <h4 class="fw-semibold mb-0">Email</h4>
+                <p class="text-muted">someone@example.com</p>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <div
+                    class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-dark bg-gradient fs-4 rounded-3">
+                    <svg class="bi" width="1em" height="1em">
+                        <use xlink:href="#collection"></use>
+                    </svg>
+                </div>
+                <h4 class="fw-semibold mb-0">Twitter</h4>
+                <p class="text-muted">@someonetweet</p>
+            </div>
+            <div class="d-flex flex-column gap-2">
+                <div
+                    class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-dark bg-gradient fs-4 rounded-3">
+                    <svg class="bi" width="1em" height="1em">
+                        <use xlink:href="#collection"></use>
+                    </svg>
+                </div>
+                <h4 class="fw-semibold mb-0">Telegram</h4>
+                <p class="text-muted">t:/e-learnonline</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Mail Contact Method -->
+
+<div class="container px-4 py-5">
+    <h1 class="pb-3 border-bottom fw-bold">Contact us from Mail</h1>
+</div>
+
+<div class="container d-flex justify-content-center pt-5 pb-5 px-5 text-bg-light m-auto mb-4 rounded-3" style="background-color: rgb(217, 241, 255);">
+    <div class="col-md-7 col-lg-8">
+        <form class="needs-validation m-auto" novalidate="" action="" method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                {% for fm in form %}
+                    <div class="col-sm-12">
+                        {% if fm.label_tag != 'id_body' %}
+                            {{fm}} <br>
+                        {% else %}
+                            <h1>Inside of Body</h1>
+                            <label for="{{ fm.id_for_label }}" class="form-label">{{ fm.label_tag }}</label>
+                            <textarea class="form-control" id="{{ fm.id_for_label }}" name="{{ fm.name }}" rows="5">
+                                {{ fm.as_p }}
+                            </textarea>
+                        {% endif %}
+                        <div class="invalid-feedback">
+                            {{ fm.non_field_errors }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <hr class="my-4">
+            <div class="container text-center">
+                <button class="w-50 btn btn-outline-dark btn-lg" type="submit">Send Mail</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 {% endblock content %}

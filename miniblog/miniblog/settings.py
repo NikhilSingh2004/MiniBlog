@@ -12,6 +12,18 @@ TEMPLATES_DIRS = os.path.join(BASE_DIR, "templates")
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'user.M_User'
+
+# Super User Username : NikhilSingh
+# Supser User Password : $!ng#N!*#!l_2004
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yourserver.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'your@djangoapp.com'
+EMAIL_HOST_PASSWORD = 'your password'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,6 +1,8 @@
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
+
 # Model For Blog
+
 '''
     The Model Should Consist of these Fields:
         Date - DateTimeField, Upload Date of the Blog.
@@ -14,7 +16,7 @@ from datetime import datetime
 class Blog(models.Model):
     author = models.OneToOneField('user.M_User', on_delete=models.CASCADE)
 
-    date = models.DateTimeField(default=datetime.now())
+    date = models.DateTimeField(default=timezone.now)
 
     title = models.CharField(max_length=1024, null=True)
 
