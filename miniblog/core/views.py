@@ -12,8 +12,15 @@ def Home(request : HttpRequest) -> HttpResponse:
         Note: Do not make any changes let the page be GET, as the initial request is always GET. Let it be static
     '''
     if request.user.is_authenticated:
-        return render(request, 'core/home.html', {'loged_in' : True})
-    return render(request, 'core/home.html', {'sign_log' : True})
+        context ={
+            'profile' : True,
+            'loged_in' : True
+        }
+        return render(request, 'core/home.html', context)
+    context ={
+        'sign_log' : True
+    }
+    return render(request, 'core/home.html', context)
 
 # Function to Display the About Page of the WebSite 
 def About(request : HttpRequest) -> HttpResponse:

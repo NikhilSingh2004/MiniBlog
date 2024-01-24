@@ -47,6 +47,12 @@
                         <a class="nav-link {% block conActive %} {% endblock conActive %}"
                             href="{% url 'Contact' %}">Contact</a>
                     </li>
+                    {% if profile %}
+                        <li class="nav-item">
+                            <a class="nav-link {% block profileActive %} {% endblock profileActive %}"
+                                href="#">Profile</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 {% if sign_log %}
                     <ul class="navbar-nav ml-auto">
@@ -66,12 +72,12 @@
                             <a class="btn btn-danger m-2" href="{% url 'LogOut' %}">Log Out</a>
                         </li>
                     </ul>
-                {% elif save_blog %}
+                {% comment %} {% elif save_blog %}
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="btn btn-success m-2" href="{% url 'SaveBlog' blog.slug %}">Save Blog</a>
                         </li>
-                    </ul>
+                    </ul> {% endcomment %}
                 {% endif %}
             </div>
         </div>

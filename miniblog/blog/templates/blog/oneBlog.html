@@ -2,7 +2,7 @@
 
 {% block title %}
 
-Blogs Home
+Blog Post
 
 {% endblock title %}
 
@@ -17,12 +17,9 @@ active
 <div class="container">
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative my-3">
         <div class="col p-5 d-flex flex-column position-static">
-            <strong>Blog By : <strong class="d-inline-block mb-3 text-primary">{{blog.author}}</strong></strong>
             <h1 class="mb-2 display-6 fw-bold">{{blog.title}}</h1>
             <div class="mb-1 text-muted">
-                <strong>
-                    {{blog.date}}
-                </strong>
+                <strong>Blog By : <strong class="d-inline-block mb-3 text-primary">{{blog.author}}</strong> | <strong>{{blog.date}}</strong></strong>
             </div>
             <p class="mb-auto">
                 {{blog.content}}
