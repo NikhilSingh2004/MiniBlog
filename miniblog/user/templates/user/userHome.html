@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{{user}}
+
+{% endblock title %}
+
+{% block profileActive %}
+
+active
+
+{% endblock profileActive %}
+
+{% block content %} 
+
+<!-- 
+
+    There will be a partition in the user home page.
+    Left side to display the user info.
+    Right side to display some content, like Intresting posts| with pagination. 
+
+-->
+
+<div class="container text-center">
+    <h1 class="display-5">Welcome, {{user}}.</h1>
+</div>
+
+<div class="container">
+    <h1 class="display-6">To MiniBlog Website!</h1>
+</div>
+
+{% endblock content %}

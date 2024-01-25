@@ -13,7 +13,6 @@ def Home(request : HttpRequest) -> HttpResponse:
     '''
     if request.user.is_authenticated:
         context ={
-            'profile' : True,
             'loged_in' : True
         }
         return render(request, 'core/home.html', context)

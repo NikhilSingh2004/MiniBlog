@@ -47,10 +47,10 @@
                         <a class="nav-link {% block conActive %} {% endblock conActive %}"
                             href="{% url 'Contact' %}">Contact</a>
                     </li>
-                    {% if profile %}
+                    {% if loged_in %}
                         <li class="nav-item">
                             <a class="nav-link {% block profileActive %} {% endblock profileActive %}"
-                                href="#">Profile</a>
+                                href="{% url 'UserHome' %}">Profile</a>
                         </li>
                     {% endif %}
                 </ul>
