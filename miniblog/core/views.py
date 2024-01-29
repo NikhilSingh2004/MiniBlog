@@ -1,7 +1,9 @@
+from blog.models import Blog
 from user.models import M_User
 from django.shortcuts import render
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from .forms import SignUpForm, AuthenticateM_UserForm, CustomPasswordChangeForm, FormContactUs
 
@@ -11,13 +13,25 @@ def Home(request : HttpRequest) -> HttpResponse:
         Function to display the Home Page of the Project
         Note: Do not make any changes let the page be GET, as the initial request is always GET. Let it be static
     '''
+    Blog_list = Blog.objects.all().order_by('id') 
+    paginator = Paginator(Blog_list, 5)
+    page = request.GET.get('page', 1)
+    blogs = None
+    try:
+        blogs = paginator.page(page)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+    except EmptyPage:
+        blogs = paginator.page(paginator.num_pages)
     if request.user.is_authenticated:
         context ={
-            'loged_in' : True
+            'loged_in' : True,
+            'blogs' : blogs
         }
         return render(request, 'core/home.html', context)
     context ={
-        'sign_log' : True
+        'sign_log' : True,
+        'blogs' : blogs
     }
     return render(request, 'core/home.html', context)
 

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
 
 Home
@@ -12,10 +14,79 @@ active
 
 {% endblock homeActive %}
 
-{% block content %} 
+{% block content %}
 
-<div class="container text-center alert alert-success">
+{% comment %} <div class="container text-center alert alert-success ">
     <h1 class="display-5">This is the Home Page!</h1>
+</div> {% endcomment %}
+
+<div class="container mt-5 rounded">
+    <h1 class="display-3" style="color : rgb(53, 30, 16);">Welcome to MiniBlog Website</h1>
+    <div class="container my-5 pt-5 rounded" style="background-color : rgb(252,235,215);">
+        <div class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static rounded">
+                <h3 class="mb-0 display-2 fw-bold">MiniBlog</h3>
+                <p class="mb-auto display-6">MiniBlog in an Website to explore knowledge of various differrent streams.
+                </p>
+                <h5 style="color : rgb(53, 30, 16);">Knowledge Limitless!..</h5>
+            </div>
+            <div class="col-auto d-none d-lg-block rounded">
+                <img src="{% static 'core/images/HomeImage.png' %}" class="d-block w-100" alt="Img">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="p-5 mb-4 bg-light rounded-3" style="background-color: rgb(217, 241, 255);">
+    <img class="d-block mx-auto mb-4 rounded-circle" src="{% static 'core/images/LinkedIn.jpg' %}" alt="" width="200"
+        height="200">
+    <div class="px-4 pt-5 text-center border-bottom">
+        <span>
+            <h1 class="display-4 fw-bold">MiniBlog</h1>
+            <h3>Knowledge Limitless!..</h3>
+        </span>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">Welcome to MiniBlog, where knowledge knows no bounds! 🚀 Dive into a world of limitless
+                wisdom as we unravel the secrets of diverse topics. Our carefully curated blogs are crafted to
+                enlighten, inspire, and empower you. Explore the realms of curiosity and broaden your horizons with each
+                captivating read. Knowledge is not just power; it's limitless! 🌐✨ Embark on a journey of discovery and
+                transform the way you perceive the world. Ready to expand your mind? Start exploring now!</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+                <a href="{% url 'BlogHome' %}" class="btn btn-primary btn-lg px-4 me-sm-3">Read Blogs</a>
+                <a href="{% url 'About' %}" class="btn btn-outline-secondary btn-lg px-4">About</a>
+            </div>
+        </div>
+        <div class="overflow-hidden" style="max-height: 30vh;">
+            <div class="container px-5">
+                <img src="{% static 'core/images/HomeImage.png' %}" class="img-fluid border rounded-3 shadow-lg mb-4"
+                    alt="Example image" width="700" height="500" loading="lazy">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="container">
+        <div class="container my-5 mx-2">
+            <h1 class="display-5 fw-bold pb-2 border-bottom mb-3">Popular Blogs</h1>
+            {% for blog in blogs %}
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong>Blog By : <strong class="d-inline-block mb-3 text-primary">{{blog.author}}</strong></strong>
+                    <h3 class="mb-0">{{blog.title}}</h3>
+                    <div class="mb-1 text-muted">{{blog.date}}</div>
+                    <p class="card-text mb-auto px-5 mx-5">
+                        {{blog.content | truncatechars:200}}
+                    </p>
+                    <a href="{% url 'OneBlog' blog.slug %}" class="stretched-link">Continue reading</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 {% endblock content %}

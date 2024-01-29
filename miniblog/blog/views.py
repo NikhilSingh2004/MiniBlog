@@ -32,7 +32,7 @@ def OneBlog(request : HttpRequest, slug : str) -> HttpResponse:
     '''
     try:
         blog = Blog.objects.filter(slug=slug).first()
-        return render(request, 'blog/oneBlog.html', {'blog' : blog, 'save_blog' : True})
+        return render(request, 'blog/oneBlog.html', {'blog' : blog, 'save_blog' : True, 'loged_in':True})
     except Exception as e:
         print(e.__str__())
         return HttpResponseRedirect('/')

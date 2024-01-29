@@ -13,6 +13,13 @@ from django.utils import timezone
     Can Add more content if needed!.
 '''
 
+'''
+
+    Might need to add one more field, that holds an array of tags(Tags : comedy, java, c, celecrity)
+    - Will help users to filter out there specific intrest of blogs!
+
+'''
+
 class Blog(models.Model):
     author = models.OneToOneField('user.M_User', on_delete=models.CASCADE)
 

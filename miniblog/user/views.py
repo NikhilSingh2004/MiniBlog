@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import M_User
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 # User Home
 def UserHome(request : HttpRequest) -> HttpResponse:
@@ -22,8 +23,9 @@ def UserHome(request : HttpRequest) -> HttpResponse:
     context ={
         'sign_log' : True
     }
-    return render(request, 'user/userHome.html', context)
+    return HttpResponseRedirect('/login/')
 
+@login_required
 def EditUser(request : HttpRequest) -> HttpResponse:
     '''
         Check for Authentication, if yes proceed.
@@ -32,9 +34,10 @@ def EditUser(request : HttpRequest) -> HttpResponse:
     '''
     return HttpResponse("This is the Edit Page of the user with the Object being initialized!")
 
+@login_required
 def DeleteUser(request :  HttpRequest) -> HttpResponse:
     '''
         Function to delete the user. First Make sure the user is authenticated 
         Do not do hard delete! Make a soft delete
     '''
-    return HttpResponse("This is the Delete User Function")
+    
