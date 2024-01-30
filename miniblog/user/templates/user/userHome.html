@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block headContent %}
+
+<link rel="stylesheet" href="{% static 'user/css/main.css' %}">
+
+{% endblock headContent %}
+
 {% block title %}
 
 {{user}}
@@ -12,7 +20,7 @@ active
 
 {% endblock profileActive %}
 
-{% block content %} 
+{% block content %}
 
 <!-- 
 
@@ -22,12 +30,74 @@ active
 
 -->
 
-<div class="container text-center">
-    <h1 class="display-5">Welcome, {{user}}.</h1>
-</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <span class="fs-4">{{user_name}}</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" aria-current="page">
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        Edit Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        Products (In Progress)
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        Contact Us
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <br>
+            <br>
+            <br>
+            <div class="container my-5 py-5">
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                    id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <strong>Settings</strong>
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="#">Become Author</a></li>
+                    <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="{% url 'LogOut' %}">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
 
-<div class="container">
-    <h1 class="display-6">To MiniBlog Website!</h1>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 my-4">
+            <h2>Welcome, {{user_name}}</h2>
+            <p>This is the User Home Page!</p>
+            You can access the Dashboard Section if you are an Author, if not then you will be redirected to become one!
+
+
+        </main>
+    </div>
 </div>
 
 {% endblock content %}

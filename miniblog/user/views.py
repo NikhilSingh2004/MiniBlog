@@ -12,7 +12,7 @@ def UserHome(request : HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         user = None
         try:
-            user = request.user.first_name + request.user.last_name
+            user = request.user.first_name + " " + request.user.last_name
         except Exception as e:
             pass
         context ={
