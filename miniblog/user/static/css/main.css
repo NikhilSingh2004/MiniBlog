@@ -1,0 +1,17 @@
+html, body {
+    height: 100%;
+}
+
+.container-fluid, .row {
+    height: 100%;
+}
+
+#sidebar {
+    height: 100%;
+    position: fixed;
+}
+
+main {
+    overflow: auto;
+    height: 100%;
+}

@@ -14,8 +14,11 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'user.M_User'
 
-# Super User Username : NikhilSingh
+# Super User Username : NikhilBabu
 # Supser User Password : $!ng#N!*#!l_2004
+
+# Akshay User : AkshayBabu
+# Password : @*$#@y_202
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yourserver.com'

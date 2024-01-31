@@ -49,7 +49,7 @@ active
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-dark">
+                    <a href="{% url 'EditUser' request.user.id %}" class="nav-link link-dark">
                         Edit Profile
                     </a>
                 </li>
@@ -59,10 +59,17 @@ active
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-dark">
+                    <a href="{% url 'Contact' %}" class="nav-link link-dark">
                         Contact Us
                     </a>
                 </li>
+                {% if notAuthor %}
+                <li>
+                    <a href="#" class="nav-link link-dark">
+                        Become Author
+                    </a>
+                </li>
+                {% endif %}
             </ul>
             <hr>
             <br>
@@ -80,8 +87,8 @@ active
                     <strong>Settings</strong>
                 </a>
                 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="#">Become Author</a></li>
-                    <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'EditUser' request.user.id %}">Edit Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'DeleteUser' request.user.id %}">Delete Profile</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
@@ -91,11 +98,52 @@ active
         </div>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 my-4">
-            <h2>Welcome, {{user_name}}</h2>
-            <p>This is the User Home Page!</p>
-            You can access the Dashboard Section if you are an Author, if not then you will be redirected to become one!
+            <h2 class="border-bottom mb-5 pb-3 ms-0">Popular Blog's</h2>
+            <div class="container">
+                {% for blog in blogs %}
+                <div
+                    class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong>Blog By : <strong
+                                class="d-inline-block mb-3 text-primary">{{blog.author}}</strong></strong>
+                        <h3 class="mb-0">{{blog.title}}</h3>
+                        <div class="mb-1 text-muted">{{blog.date}}</div>
+                        <p class="card-text mb-auto px-5 mx-5">
+                            {{blog.content | truncatechars:200}}
+                        </p>
+                        <a href="{% url 'OneBlog' blog.slug %}" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
 
+                    </div>
+                </div>
+                {% endfor %}
 
+                <!-- Pagination -->
+
+                <div class="text-center">
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if blogs.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ blogs.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}.
+                            </span>
+
+                            {% if blogs.has_next %}
+                            <a href="?page={{ blogs.next_page_number }}">next</a>
+                            <a href="?page={{ blogs.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Pagination Ends -->
+            </div>
+            
         </main>
     </div>
 </div>

@@ -86,6 +86,7 @@ def SignUP(request : HttpRequest) -> HttpResponse:
                     form.save()
                     messages.success(request, "Sign Up Successful!")
                     return HttpResponseRedirect('/')
+                messages.error(request, "Something Went Wrong!")
                 form = SignUpForm()
                 return render(request, 'core/signup.html', {'form' : form, 'sign_log' : False})
             except Exception as e:
@@ -112,7 +113,7 @@ def LogIn(request: HttpRequest) -> HttpResponse:
                 if fm.is_valid():
                     username = fm.cleaned_data['username']
                     password = fm.cleaned_data['password']
-                    user = authenticate(username=username, password=password)
+                    user = authenticate(username=username, password=password, is_deleted=False)
                     
                     if user:
                         login(request=request, user=user)

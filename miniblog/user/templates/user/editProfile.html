@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Edit Profile
+
+{% endblock title %}
+
+{% block content %} 
+
+<div class="container text-center alert alert-success  my-5">
+    <h1 class="display-5">Edit Your Profile</h1>
+</div>
+
+<div class="container text-center">
+    <div class="container">
+        <form action="{% url 'EditUser' request.user.id %}" method="post" novalidate>
+            {% csrf_token %}
+            <table>
+                {% for f in form %}
+                    {{f}}<br><br>   
+                {% endfor %}
+                {{ form.non_field_errors }}
+            </table>
+            <button class="btn btn-success mb-5" type="submit"><h5>Save</h5></button>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
