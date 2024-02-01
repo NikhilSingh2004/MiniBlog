@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block headContent %}
+
+<link rel="stylesheet" href="{% static 'user/css/main.css' %}">
+
+{% endblock headContent %}
+
+{% block title %}
+
+{{user}}
+
+{% endblock title %}
+
+{% block profileActive %}
+
+active
+
+{% endblock profileActive %}
+
+{% block content %}
+
+<!-- 
+
+    There will be a partition in the user home page.
+    Left side to display the user info.
+    Right side to display some content, like Intresting posts| with pagination. 
+
+-->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                <span class="fs-4">{{user}}</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'UserHome' %}" class="nav-link link-dark active my-2" aria-current="page">
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark active my-1">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'EditUser' request.user.id %}" class="nav-link link-dark active my-1">
+                        Edit Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-dark active my-1">
+                        Products (In Progress)
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Contact' %}" class="nav-link link-dark active my-1">
+                        Contact Us
+                    </a>
+                </li>
+                {% if notAuthor %}
+                <li>
+                    <a href="{% url 'BecomeAuthor' %}" class="nav-link link-dark active my-1">
+                        Become Author
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            <hr>
+            <br>
+            <br>
+            <br>
+            <div class="container my-5 py-5">
+            </div>
+            <br>
+            <br>
+            <br>
+            {% comment %} <div class="dropdown">
+                <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                    id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <strong>Settings</strong>
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="{% url 'EditUser' request.user.id %}">Edit Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'DeleteUser' request.user.id %}">Delete Profile</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="{% url 'LogOut' %}">Log Out</a></li>
+                </ul>
+            </div> {% endcomment %}
+        </div>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 my-4">
+            <h2 class="border-bottom mb-5 pb-3 ms-0">Your Blogs</h2>
+            <div class="container">
+                {% for blog in blogs %}
+                <div
+                    class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong>Blog By : <strong
+                                class="d-inline-block mb-3 text-primary">{{blog.author}}</strong></strong>
+                        <h3 class="mb-0">{{blog.title}}</h3>
+                        <div class="mb-1 text-muted">{{blog.date}}</div>
+                        <p class="card-text mb-auto px-5 mx-5">
+                            {{blog.content | truncatechars:200}}
+                        </p>
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
+                            <a href="{% url 'OneBlog' blog.slug %}" class="btn btn-primary">Edit Blog</a>
+                            <a href="{% url 'OneBlog' blog.slug %}" class="btn btn-outline-danger">Delete Blog</a>
+                        </div>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Pagination -->
+
+                <div class="text-center">
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if blogs.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ blogs.previous_page_number }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}.
+                            </span>
+
+                            {% if blogs.has_next %}
+                            <a href="?page={{ blogs.next_page_number }}">next</a>
+                            <a href="?page={{ blogs.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Pagination Ends -->
+            </div>
+
+        </main>
+    </div>
+</div>
+
+{% endblock content %}

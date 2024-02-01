@@ -10,4 +10,5 @@ urlpatterns = [
     path('', include('core.urls')),
     path('blog/', include('blog.urls')),
     path('user/', include('user.urls')),
+    # path('author/', include('author.urls')),
 ]

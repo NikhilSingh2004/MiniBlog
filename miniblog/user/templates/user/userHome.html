@@ -34,38 +34,33 @@ active
     <div class="row">
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                <span class="fs-4">{{user_name}}</span>
+                <span class="fs-4">{{user}}</span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
+                    <a href="{% url 'UserHome' %}" class="nav-link link-dark active my-2" aria-current="page">
                         Home
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-dark">
-                        Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'EditUser' request.user.id %}" class="nav-link link-dark">
+                    <a href="{% url 'EditUser' request.user.id %}" class="nav-link link-dark active my-1">
                         Edit Profile
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-dark">
+                    <a href="#" class="nav-link link-dark active my-1">
                         Products (In Progress)
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'Contact' %}" class="nav-link link-dark">
+                    <a href="{% url 'Contact' %}" class="nav-link link-dark active my-1">
                         Contact Us
                     </a>
                 </li>
                 {% if notAuthor %}
                 <li>
-                    <a href="#" class="nav-link link-dark">
+                    <a href="{% url 'BecomeAuthor' %}" class="nav-link link-dark active my-1">
                         Become Author
                     </a>
                 </li>
@@ -83,8 +78,8 @@ active
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
                     id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong>Settings</strong>
+                    {% comment %} <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> {% endcomment %}
+                    <h5 class="nav-link link-dark active my-1">Settings</h5>
                 </a>
                 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                     <li><a class="dropdown-item" href="{% url 'EditUser' request.user.id %}">Edit Profile</a></li>
@@ -98,7 +93,11 @@ active
         </div>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 my-4">
+            {% if notAuthor %}
             <h2 class="border-bottom mb-5 pb-3 ms-0">Popular Blog's</h2>
+            {% else %}
+            <h2 class="border-bottom mb-5 pb-3 ms-0">Your Blogs</h2>
+            {% endif %}
             <div class="container">
                 {% for blog in blogs %}
                 <div
@@ -111,7 +110,14 @@ active
                         <p class="card-text mb-auto px-5 mx-5">
                             {{blog.content | truncatechars:200}}
                         </p>
+                        {% if notAuthor %}
                         <a href="{% url 'OneBlog' blog.slug %}" class="stretched-link">Continue reading</a>
+                        {% else %}
+                        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-2">
+                            <a href="{% url 'OneBlog' blog.slug %}" class="btn btn-primary">Edit Blog</a>
+                            <a href="{% url 'OneBlog' blog.slug %}" class="btn btn-outline-danger">Delete Blog</a>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="col-auto d-none d-lg-block">
 
@@ -143,7 +149,7 @@ active
 
                 <!-- Pagination Ends -->
             </div>
-            
+
         </main>
     </div>
 </div>
